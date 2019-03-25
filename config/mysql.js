@@ -11,8 +11,8 @@ module.exports = (function() {
         connectionLimit: 10,
         host: process.env.DB_HOST || "localhost",
         user: process.env.DB_USER || "root",
-        password: process.env.DB_PSWD || "root",
-        database: process.env.DB_DTBS || "test",
+        password: process.env.DB_PSWD || "",
+        database: process.env.DB_DTBS || "soundonline",
         port: 3306
       });
   })();
