@@ -1,3 +1,12 @@
+# API files
+views/pages
+routes/brand.js
+routes/brandadmin.js
+routes/group.js
+product.js
+lib/
+assets/
+
 # Logs
 logs
 *.log

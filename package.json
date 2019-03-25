@@ -1,0 +1,29 @@
+{
+  "name": "soundonline",
+  "version": "1.0.0",
+  "description": "A online music store API with CRUD function - build in node.js",
+  "main": "app.js",
+  "scripts": {
+    "start": "node -r dotenv/config app.js dotenv_config_path=./.env",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Webudvikler-TechCollege/soundonline.git"
+  },
+  "author": "Heinz K",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Webudvikler-TechCollege/soundonline/issues"
+  },
+  "homepage": "https://github.com/Webudvikler-TechCollege/soundonline#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {
+    "dotenv": "^7.0.0"
+  }
+}
