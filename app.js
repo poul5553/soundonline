@@ -15,7 +15,6 @@ app.use(express.static(__dirname + '/'));
 //Requires
 require('./routes/index')(app);
 
-
 //Angiver en listener på port 4000
 app.listen(port, () => {
     console.log(`Express server started http://localhost:${port}`);
