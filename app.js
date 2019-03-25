@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 4000;
+const paart = process.env.PORT || 4000;
 
 //Set port
-app.set('port', port);
+app.set('port', paart);
 //Set view directory (__dirname => DOCUMENT_ROOT)
 app.set('views', __dirname + '/views');
 //Set view engine to ejs
@@ -16,6 +16,6 @@ app.use(express.static(__dirname + '/'));
 require('./routes/index')(app);
 
 //Angiver en listener på port 4000
-app.listen(port, () => {
-    console.log(`Express server started http://localhost:${port}`);
+app.listen(paart, () => {
+    console.log(`Express server started http://localhost:${paart}`);
 });
