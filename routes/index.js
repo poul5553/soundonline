@@ -1,4 +1,4 @@
-const mysql = require('../config/mysql') ();
+const mysql = require('../config/mysql')();
 const bodyParser = require('body-parser');
 
 module.exports = (app) => {
@@ -16,9 +16,7 @@ module.exports = (app) => {
     });
 
     //Get single product
-    app.get('/api/:id', (req, res) => {
-        res.sendStatus(200);
-    })
+    
     
     //Add new item
     app.post('/api/', (req, res) => {
