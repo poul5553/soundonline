@@ -20,7 +20,7 @@ module.exports = (app) => {
         })
     })
 
-    // POST: Opretter nyt productgroup enkelt productgroup ud fra id
+    // POST: Opretter nyt productgroup ud fra id
     app.get ('/admin/productgroup/create', (req, res) => {
         res.render('pages/admin/productgroup/create', {
 
