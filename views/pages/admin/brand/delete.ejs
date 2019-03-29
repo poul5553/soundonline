@@ -1,0 +1,58 @@
+<% include ../../../partials/header %>
+
+<div id="delete"></div>
+<button id="delsubmit" class="btn btn-danger">Slet</button>
+
+<script>
+    // sætter vars til id og url 
+    const id = <%= id %>;
+    const url = '/api/brand/' + id;
+    
+   
+    fetch(url) 
+        .then(data => {
+            return data.json();
+        })
+        .then(data => {
+
+            let html = `<table class="table"> 
+              
+                <tr> 
+                <td width="15%"><b>Titel</b></td>
+                <td>${data[0].title}</td> 
+                </tr> 
+
+                <tr> 
+                <td><b>Beskrivelse</b></td>
+                <td>${data[0].description}</td> 
+                </tr> 
+                </table>
+                `;
+
+                html += `</br><p>Vil du slette denne ident: ${data[0].id}</p>`
+            
+                document.getElementById('delete').innerHTML = html;
+            })
+
+    //Sætter klik event på formens Gem knap.
+    document.getElementById('delsubmit').onclick = () => {   
+        const del_url = "/api/brand/" + id;
+        const fetchSettings = {
+            method: 'DELETE'
+        }
+
+        fetch(del_url, fetchSettings)
+            .then(data => {
+                console.log(data);         
+                document.location.href = '/admin/brand/list';           
+            })
+            .catch(err => {
+                console.error(err);
+            })
+
+    }
+          
+  
+</script>
+
+<% include ../../../partials/footer %>

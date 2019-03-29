@@ -1,0 +1,56 @@
+<% include ../../../partials/header %>
+
+    <div id = "list" >
+
+    </div>
+
+    <script >
+    const url = "/api/productgroup/";
+
+    fetch(url)
+    .then(data => {
+        return data.json();
+    })
+    .then(data => {
+
+        let html = `<table class="table">
+                <thead> 
+                <tr> 
+                <th width="15%">Handling</th> 
+                <th>Titel</th> 
+                <th>Tilhører</th> 
+                <thead> `;
+                til = 0;
+        for (var item of data) {
+            var tilhoerer = " "; 
+            for (var parent of data) {
+                if (item.parent_id > 0 && item.parent_id === parent.id) {
+                    tilhoerer = parent.title; 
+                }
+            }
+          
+            html += `<tr> 
+                    <td> 
+                    <a class="icon" href="/admin/productgroup/update/${item.id}" title="Rediger"> 
+                    <i class="fas fa-pencil-alt"></i></a> 
+                    <a class="icon" href="/admin/productgroup/details/${item.id}" title="Vis detailjer"> 
+                    <i class="fas fa-info-circle"></i></a> 
+                    <a class="icon" href="/admin/productgroup/delete/${item.id}" title="Slet">
+                    <i class="fas fa-trash-alt"></i></a>
+                    </td>
+                    <td>${item.title}</td>
+                    <td>${tilhoerer}</td>
+                    </tr>`;
+        }
+        html += '</table>';
+        document.getElementById('list').innerHTML = html;
+    });
+
+let btn = document.createElement('a');
+btn.setAttribute('class', 'btn btn-default');
+btn.setAttribute('href', '/admin/productgroup/create');
+btn.innerHTML = 'Opret ny';
+document.getElementById('buttonpanel').appendChild(btn); 
+</script>
+
+<% include ../../../partials/footer %>

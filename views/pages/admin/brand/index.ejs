@@ -1,0 +1,45 @@
+<% include ../../../partials/header %>
+
+    <div id = "list" >
+
+    </div>
+
+    <script >
+    const url = "/api/brands/";
+
+    fetch(url)
+    .then(data => {
+        return data.json();
+    })
+    .then(data => {
+        let html = `<table class="table">
+                <thead> 
+                <tr> 
+                <th width="15%">Handling</th> 
+                <th>Titel</th> 
+                <thead> `;
+        for (var item of data) {
+            html += `<tr> 
+                    <td> 
+                    <a class="icon" href="/admin/brand/update/${item.id}" title="Rediger"> 
+                    <i class="fas fa-pencil-alt"></i></a> 
+                    <a class="icon" href="/admin/brand/details/${item.id}" title="Vis detailjer"> 
+                    <i class="fas fa-info-circle"></i></a> 
+                    <a class="icon" href="/admin/brand/delete/${item.id}" title="Slet">
+                    <i class="fas fa-trash-alt"></i></a>
+                    </td>
+                    <td>${item.title}</td>
+                    </tr>`;
+        }
+        html += '</table>';
+        document.getElementById('list').innerHTML = html;
+    });
+
+let btn = document.createElement('a');
+btn.setAttribute('class', 'btn btn-default');
+btn.setAttribute('href', '/admin/brand/create');
+btn.innerHTML = 'Opret ny';
+document.getElementById('buttonpanel').appendChild(btn); 
+</script>
+
+<% include ../../../partials/footer %>
