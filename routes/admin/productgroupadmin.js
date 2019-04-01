@@ -10,6 +10,16 @@ module.exports = (app) => {
         })
     })
 
+    // GET: Henter lister med productgroups for parent_id
+    app.get ('/admin/productgroup/list/:id', (req, res) => {
+        res.render('pages/admin/productgroup/index', {
+
+                modulename: modulename,
+                modulemode: 'Oversigt'
+        })
+    })
+
+
     // GET: Henter enkelt productgroup ud fra id
     app.get ('/admin/productgroup/details/:id', (req, res) => {
         res.render('pages/admin/productgroup/details', {
