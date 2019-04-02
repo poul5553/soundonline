@@ -11,8 +11,8 @@
 </div>
 <div class="form-group" data-group="parentid">
     <label class="col-sm-2 control-label required" for="parentid">Tilhører:</label>
-    <div class="col-sm-10">
-        <input class="form-control" name="parentid" id="parentid" value="">
+    <div class="col-sm-10" id="parentid">
+
     </div>
 </div>
 <div class="form-group" data-group="description">
@@ -33,6 +33,23 @@
     // sætter vars til id og url 
     const id = <%= id %>;
     const form = document.querySelector('form');
+
+    const urlp = '/api/productgroup/0';
+
+    fetch(urlp)
+    .then(data => {
+        return data.json();
+    })
+    .then(data => {
+
+        let html = `<select class="form-control" name="parentid" id="parentid">`;
+        html += `<option value="${0}">Ingen gruppe</option>`      
+        for (var item of data) {
+            html += `<option value="${item.id}">${item.title}</option>`;           
+        }
+        html += ' </select>';
+        document.getElementById('parentid').innerHTML = html;
+    });
    
     fetch('/api/productgroup/' + id) 
         .then(data => {
@@ -54,7 +71,7 @@
             }), 
             body: JSON.stringify ({
                 title: form.title.value, 
-                parentid: form.parentid.value, 
+                parentId: form.parentid.value, 
                 description: form.description.value
             })
         }

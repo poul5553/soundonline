@@ -2,10 +2,13 @@
 
 <div id="details"></div>
 
+
 <script>
     // sætter vars til id og url 
+  
     const id = <%= id %>;
     const url = '/api/productgroup/' + id;
+    
     
    
     fetch(url) 
@@ -13,19 +16,21 @@
             return data.json();
         })
         .then(data => {
-            let html = `<table class="table"> 
+
+           if (data[0].parent_id == 0) {
+                parTitel = " ";
+
+                let html = `<table class="table"> 
               
                 <tr> 
                 <td width="15%"><b>Titel</b></td>
                 <td>${data[0].title}</td> 
-                </tr> 
-
-                <tr> 
+                </tr>` 
+                html += `<tr> 
                 <td width="15%"><b>Tilhører</b></td>
-                <td>${data[0].parent_id}</td> 
-                </tr> 
-
-                <tr> 
+                <td>${parTitel}</td> 
+                </tr> `
+                html += `<tr> 
                 <td><b>Beskrivelse</b></td>
                 <td>${data[0].description}</td> 
                 </tr> 
@@ -33,6 +38,41 @@
                 `;
             
                 document.getElementById('details').innerHTML = html;
+            } else {   
+               
+                const urlp = '/api/productgroup/' + data[0].parent_id;
+                fetch(urlp)
+                    .then(datap => {
+                        return datap.json();
+            
+                    })
+                    .then (datap => {
+                        let html = `<table class="table"> 
+              
+                        <tr> 
+                        <td width="15%"><b>Titel</b></td>
+                        <td>${data[0].title}</td> 
+                        </tr>` 
+                        html += `<tr> 
+                        <td width="15%"><b>Tilhører</b></td>
+                        <td>${datap[0].title}</td> 
+                        </tr> `
+                        html += `<tr> 
+                        <td><b>Beskrivelse</b></td>
+                        <td>${data[0].description}</td> 
+                        </tr> 
+                        </table>
+                        `;
+                    
+                        document.getElementById('details').innerHTML = html;
+                               
+                    })
+                
+            };
+           
+           
+            
+            
             })
           
             //Udskriver knapper til Oversigt og Rediger via Javascripts createElement
@@ -48,6 +88,17 @@
             btn.setAttribute('href', '/admin/productgroup/list');
             btn.innerHTML = 'Oversigt';
             document.getElementById('buttonpanel').appendChild(btn);  
+
+    function parentHtml(par) {
+      
+        parTitel = " ";
+        html += `<tr> 
+        <td width="15%"><b>Tilhører</b></td>
+        <td>${parTitel}</td> 
+        </tr> `
+        
+    }
+        
 </script>
 
 <% include ../../../partials/footer %>
