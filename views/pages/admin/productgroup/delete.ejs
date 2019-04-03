@@ -42,8 +42,7 @@
         }
 
         fetch(del_url, fetchSettings)
-            .then(data => {
-                console.log(data);         
+            .then(data => {        
                 document.location.href = '/admin/productgroup/list';           
             })
             .catch(err => {

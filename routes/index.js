@@ -1,35 +1,33 @@
-const mysql = require('../config/mysql')();
-const bodyParser = require('body-parser');
-
-module.exports = (app) => {
-    //Get all 
-    app.get('/api/', function(req, res) {
-        const sql = "select * from brand"; 
-        mysql.query(sql, (err, rows, fields) => {
-            if(err) {
-                console.error (err);
-            } else {
-                return res.json(rows); 
-            }
-        })
-        // res.sendStatus(200);
-    });
-
-    //Get single product
-    
-    
-    //Add new item
-    app.post('/api/', (req, res) => {
-        res.sendStatus(200);
-    })
-    
-    //Update item
-    app.put('/api/:id', (req, res) => {
-        res.sendStatus(200);
-    })
-    
-    //Delete item
-    app.delete('/api/:id', (req, res) => {
-        res.sendStatus(200);
-    })
-}
+/**
+ * Automatisk require af routes
+ * Alle nødvendige routes bør ligge i en undermappe (api, admin, auth)
+ */
+ const fs = require('fs');
+ const path = require('path');
+ 
+ module.exports = (app) => {
+     //Looper routes dir
+     fs.readdirSync(__dirname, {
+         withFileTypes: true
+     }).forEach(dir => {
+         //Tjekker om fil er et dir
+         let curpath = path.join(__dirname, dir.name);
+         let stat = fs.statSync(curpath);
+         //Hvis fil er et dir
+         if(stat.isDirectory()) {
+             //Lær dir
+             fs.readdirSync(curpath, {
+                 withFileTypes: true
+             }).forEach(file => {
+                 //Require fil
+                 if(file.name !== path.basename) {
+                     try {
+                         require(path.join(curpath,file.name))(app);
+                     } catch (error) {
+                         console.error(error);
+                     }
+                 } 
+             })
+         }
+     })
+ }

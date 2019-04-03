@@ -79,7 +79,6 @@
         fetch(url, fetchSettings) 
         .then(res => {
             if(res.status === 200) {
-                console.log(res); 
                 document.location.href = '/admin/productgroup/details/' + id; 
             }
         }).catch(err => {
