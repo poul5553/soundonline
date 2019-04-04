@@ -10,7 +10,7 @@ module.exports = (function() {
       mysql.createPool({
         connectionLimit: 10,
         host: process.env.DB_HOST || "localhost",
-        user: process.env.DB_USER || "",
+        user: process.env.DB_USER || "root",
         password: process.env.DB_PSWD || "",
         database: process.env.DB_DTBS || "soundonlinie",
         port: 3306 

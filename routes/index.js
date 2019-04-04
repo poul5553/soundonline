@@ -21,10 +21,12 @@
              }).forEach(file => {
                  //Require fil
                  if(file.name !== path.basename) {
-                     try {
-                         require(path.join(curpath,file.name))(app);
-                     } catch (error) {
-                         console.error(error);
+                     if(file.name.substr(0,1) != '_') {
+                         try {
+                             require(path.join(curpath,file.name))(app);
+                         } catch (error) {
+                             console.error(error);
+                         }
                      }
                  } 
              })

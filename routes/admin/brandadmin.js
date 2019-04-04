@@ -1,4 +1,4 @@
-
+const authorize = require('../../middleware/authorize');
 const modulename = 'Mærker'; 
 
 module.exports = (app) => {
@@ -22,7 +22,8 @@ module.exports = (app) => {
     })
 
     // POST: Opretter nyt brand enkelt brand ud fra id
-    app.get ('/admin/brand/create', (req, res) => {
+    app.get ('/admin/brand/create', authorize, (req, res) => {
+      
         res.render('pages/admin/brand/create', {
 
                 modulename: modulename,
@@ -49,4 +50,18 @@ module.exports = (app) => {
                 id: req.params.id
         })
     })
+
+    function authorize(req, res, next) {
+        const baererHeader = req.headers['authorization'];
+        if(typeof baererHeader != 'undefined') {
+            const baerer = baererHeader.split(" ");
+            const baererToken = baerer[1];
+            req.token = baererToken;
+            next();
+        } else {
+            res.sendStatus(403);
+        }
+        return module.exports;
+    }    
+
 }
