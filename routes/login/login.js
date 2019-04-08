@@ -6,6 +6,7 @@ const mysql = require('../../config/mysql')();
 const authorize = require('../../middleware/authorize');
 const bcrypt = require('bcrypt');
 
+
 module.exports = (app) => {
 
     //Login: Kalder view med login formular
@@ -40,7 +41,7 @@ module.exports = (app) => {
 
 
     //Verificerer loginoplysninger
-    app.post('/login', async (req, res) => {
+    app.post('/login', async (req, res, next) => {
         //Validate af login form post
         const email = (req.body.email != undefined) ? req.body.email : '';
         const password = (req.body.password != undefined) ? req.body.password : '';
@@ -61,8 +62,10 @@ module.exports = (app) => {
                     if(bcrypt.compareSync(password, result[0].password)) {
                         //Sæt session med bruger id
                         req.session.user = result[0].id;
-                        //Redirect
-                        res.redirect('/authorize');
+                        //Redirect - skal laves dynamisk, men jeg ved ikke hvordan 
+                        res.redirect('/admin/brand/create');
+                       
+                       
                     } else {
                         //Return unauthorized
                         res.redirect('/login/2');
@@ -75,8 +78,9 @@ module.exports = (app) => {
         }
     })
 
-    app.get('/authorize', authorize, (req, res) => {
-        console.log(req.session.user);
-        res.sendStatus(200);
+    app.get('/authorize', authorize, (req, res, next) => {
+        
+        // res.sendStatus(200);
+        // return next(); 
     })
 }
