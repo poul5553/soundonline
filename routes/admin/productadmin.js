@@ -1,4 +1,5 @@
 const modulename = 'Produkter'; 
+const authorize = require('../../middleware/authorize');
 
 module.exports = (app) => {
     // GET: Henter lister med products 
@@ -46,6 +47,14 @@ module.exports = (app) => {
                 modulename: modulename,
                 modulemode: 'Slet produkt',
                 id: req.params.id
+        })
+    })
+     // GET: Henter lister med productgroups 
+     app.get ('/admin/product/prodgrp', (req, res) => {
+        res.render('pages/admin/product/prodgrp', {
+
+                modulename: modulename,
+                modulemode: 'Produktgrupper'
         })
     })
 }

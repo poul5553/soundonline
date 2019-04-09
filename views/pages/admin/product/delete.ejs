@@ -1,58 +1,42 @@
-<% include ../../../partials/header %>
-
-<div id="delete"></div>
+<!-- views/pages/index.ejs -->
+<% include ../../../partials/header %>    
+       
+<p>Vil du slette produktet <i id="title"></i> fra databasen?</p>
 <button id="delsubmit" class="btn btn-danger">Slet</button>
 
 <script>
-    // sætter vars til id og url 
+    //Sætter vars til id og url
     const id = <%= id %>;
-    const url = '/api/brand/' + id;
-    
-   
-    fetch(url) 
+    const url = '/api/product/' + id;
+
+    //Fetcher data fra API og giver besked til brugeren om 
+    //hvilket brand man er ved at slette
+    fetch(url)
         .then(data => {
             return data.json();
         })
         .then(data => {
+            document.getElementById('title').innerHTML = data[0].title;
+        });
 
-            let html = `<table class="table"> 
-              
-                <tr> 
-                <td width="15%"><b>Titel</b></td>
-                <td>${data[0].title}</td> 
-                </tr> 
+        //Sætter klik event på slette knap #delsubmit.
+        document.getElementById('delsubmit').onclick = () => {   
 
-                <tr> 
-                <td><b>Beskrivelse</b></td>
-                <td>${data[0].description}</td> 
-                </tr> 
-                </table>
-                `;
+            fetch(url, {
+                    method: 'DELETE'
+                })
+                .then(data => {
+                    if(data.status === 200) {
+                        document.location.href = '/admin/product/index';
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                })
 
-                html += `</br><p>Vil du slette denne ident: ${data[0].id}</p>`
-            
-                document.getElementById('delete').innerHTML = html;
-            })
-
-    //Sætter klik event på formens Gem knap.
-    document.getElementById('delsubmit').onclick = () => {   
-        const del_url = "/api/brand/" + id;
-        const fetchSettings = {
-            method: 'DELETE'
         }
 
-        fetch(del_url, fetchSettings)
-            .then(data => {
-                console.log(data);         
-                document.location.href = '/admin/brand/list';           
-            })
-            .catch(err => {
-                console.error(err);
-            })
-
-    }
-          
-  
+    //Opretter knap til oversigt 
+    doButton('/admin/product/list', 'Oversigt');
 </script>
-
 <% include ../../../partials/footer %>

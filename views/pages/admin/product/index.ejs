@@ -1,45 +1,47 @@
-<% include ../../../partials/header %>
+<% include ../../../partials/header %>    
 
-    <div id = "list" >
+<div id="list"></div>
 
-    </div>
+<script>
+    //Sætter var til url
+    const url = "/api/product/";
 
-    <script >
-    const url = "/api/brands/";
-
+    //Fetcher data fra API
     fetch(url)
-    .then(data => {
-        return data.json();
-    })
-    .then(data => {
-        let html = `<table class="table">
-                <thead> 
-                <tr> 
-                <th width="15%">Handling</th> 
-                <th>Titel</th> 
-                <thead> `;
-        for (var item of data) {
-            html += `<tr> 
-                    <td> 
-                    <a class="icon" href="/admin/brand/update/${item.id}" title="Rediger"> 
-                    <i class="fas fa-pencil-alt"></i></a> 
-                    <a class="icon" href="/admin/brand/details/${item.id}" title="Vis detailjer"> 
-                    <i class="fas fa-info-circle"></i></a> 
-                    <a class="icon" href="/admin/brand/delete/${item.id}" title="Slet">
-                    <i class="fas fa-trash-alt"></i></a>
-                    </td>
-                    <td>${item.title}</td>
-                    </tr>`;
-        }
-        html += '</table>';
-        document.getElementById('list').innerHTML = html;
-    });
+        .then(data => {
+            return data.json();
+        })
+        .then(data => {
+            //Lopper data og bygger tabel med data og CRUD ikoner (rediger, detaljer, slet)
+            let html = `<table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="15%">Handling</th>
+                                    <th>Titel</th>
+                                </tr>
+                            </thead>`;
 
-let btn = document.createElement('a');
-btn.setAttribute('class', 'btn btn-default');
-btn.setAttribute('href', '/admin/brand/create');
-btn.innerHTML = 'Opret ny';
-document.getElementById('buttonpanel').appendChild(btn); 
+            for(var item of data) {
+                html += `<tr> 
+                            <td> 
+                                <a class="icon" href="/admin/product/update/${item.id}" title="Rediger">
+                                    <i class="fas fa-pencil-alt"></i></a>
+                                <a class="icon" href="/admin/product/details/${item.id}" title="Se detaljer">
+                                    <i class="fas fa-info-circle"></i></a> 
+                                <a class="icon" href="/admin/product/delete/${item.id}" title="Slet">
+                                    <i class="fas fa-trash-alt"></i></a>
+                            </td>
+                            <td>${item.title}</td>
+                        </tr>`;
+            }
+            html += `</table>`;
+
+            //Injecter html table i div#list
+            document.getElementById('list').innerHTML = html;
+        });
+
+        //Udskriver knap til Opret ny
+        doButton('/admin/product/create', 'Opret ny');
 </script>
 
 <% include ../../../partials/footer %>

@@ -1,47 +1,48 @@
-<% include ../../../partials/header %>
-
+<!-- views/pages/index.ejs -->
+<% include ../../../partials/header %>    
+       
 <div id="details"></div>
 
 <script>
-    // sætter vars til id og url 
+    //Sætter vars til id og url
     const id = <%= id %>;
-    const url = '/api/brand/' + id;
-    
-   
-    fetch(url) 
+    const url = '/api/product/' + id;
+
+    //Fetcher data fra API
+    fetch(url)
         .then(data => {
             return data.json();
         })
         .then(data => {
-            let html = `<table class="table"> 
-              
-                <tr> 
-                <td width="15%"><b>Titel</b></td>
-                <td>${data[0].title}</td> 
-                </tr> 
+            let captions = {
+                'title': 'Titel',
+                'item_number': 'Varenummer',
+                'description_short': 'Kort beskrivelse',
+                'description_long': 'Lang beskrivelse',
+                'image': 'Billede',
+                'price': 'Pris',
+                'stock': 'Lagerbeholdning',
+                'deleted': 'Aktiv',
+                'brand': 'Mærke'
+            }
 
-                <tr> 
-                <td><b>Beskrivelse</b></td>
-                <td>${data[0].description}</td> 
-                </tr> 
-                </table>
-                `;
-            
-                document.getElementById('details').innerHTML = html;
-            })
-          
-               //Udskriver knapper til Oversigt og Rediger via Javascripts createElement
-        let btnedit = document.createElement('a');
-        btnedit.setAttribute('class', 'btn btn-default');
-        btnedit.setAttribute('href', '/admin/brand/update/' + id);
-        btnedit.innerHTML = 'Opdater';
-        document.getElementById('buttonpanel').appendChild(btnedit);
+            //Bygger html table med data og injecter det i div#details 
+            let html = `<table class="table">`;
+            for(const item in data[0]) {
+                if(captions[item]) {
+                    html += `<tr>
+                                <td width="15%"><b>${captions[item]}:</b></td>
+                                <td>${data[0][item]}</td>
+                            </tr>`;
+                }
+            }
+            html += `</table>`;
+            document.getElementById('details').innerHTML = html;
+        });
 
-            let btn = document.createElement('a');
-            btn.setAttribute('class', 'btn btn-default');
-            btn.setAttribute('href', '/admin/brand/list');
-            btn.innerHTML = 'Oversigt';
-            document.getElementById('buttonpanel').appendChild(btn);  
+        //Udskriver knapper til Oversigt og Rediger via Javascripts createElement
+        doButton('/admin/product/update/' + id, 'Rediger', 'buttonpanel');
+        doButton('/admin/product/list', 'Oversigt', 'buttonpanel');
 </script>
 
 <% include ../../../partials/footer %>
