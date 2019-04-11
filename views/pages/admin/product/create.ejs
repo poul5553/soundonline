@@ -108,13 +108,13 @@
 
                 if (pgroup.parent_id > 0) {
                     html += `<p class="col-sm-3">
-                    <input type="checkbox" name="productgroup" value="${pgroup.id}"> ${pgroup.title}
+                    <input type="checkbox" name="prodrel_id" value="${pgroup.id}"> ${pgroup.title}
                     </p> `;
                 }
-                
+
             }
-          
-            
+
+
 
             document.getElementById('prodgrp-list').innerHTML = html;
         });
@@ -127,14 +127,20 @@
         //Sætter var til url
         let url = '/api/product/';
 
+
+        // Find alle checkboxe til produktgrupper. Skal bruges til at danne relation mellem produkt og produktgruppe.
+        // Relationer vedligeholdes i produkt API 
+        var chkgrp = document.getElementsByName("prodrel_id");
+        var productgroups = [];
+        var j = 0;
+        for (var i = 0; i < chkgrp.length; i++) {
+            if (chkgrp[i].checked) {
+                productgroups[j] = chkgrp[i].value;
+                j++;
+            }
+        }
+
         //Sætter fetch settings med PUT metode, headers og form data
-        var pgx = form.prodrel_id[0];
-        console.dir("varenr " + form.item_number.value); 
-        console.dir("titel " + form.title.value); 
-        console.dir("brand-id " + form.brand_id.value); 
-        console.dir("pgrp0 " + pgx); 
-        
-        
         let fetchSettings = {
             method: 'POST',
             headers: new Headers({
@@ -149,25 +155,28 @@
                 price: currencyToDb(form.price.value),
                 stock: form.stock.value,
                 brand_id: form.brand_id.value,
-                
-                active: form.active.value
+                active: form.active.value,
+                prodrel_id: productgroups
             })
         }
 
-        //Fetcher data til api og tjekker resppns. Redirecter til details Hvis ok (200) 
+        //Fetch data (indsæt nyt produkt) via api og tjekker respons. Redirecter til details Hvis ok (200) 
         fetch(url, fetchSettings)
             .then(res => {
+                return res.json();
+            })
+            .then(data => {
                 if (data.id) {
-                    location.replace('/admin/brand/details/' + data.id);
+                    document.location.href = '/admin/product/details/' + data.id;
                 }
             }).catch(err => {
                 console.error(err);
             });
+
     }
 
-    //Opretter knap til oversigt + knap til produktgruppe
+    //Opretter knap til oversigt
     doButton('/admin/product/list', 'Oversigt');
-   
 </script>
 
 <% include ../../../partials/footer %>
